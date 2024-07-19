@@ -1,0 +1,23 @@
+services:
+
+  influxdb:
+      container_name: influxdb
+      image: influxdb:latest
+      restart: unless-stopped
+      volumes:
+        - /home/pi/influxdb/config.yml:/etc/influxdb2/config.yml
+        - /home/pi/influxdb/data:/var/lib/influxdb2
+      ports:
+        - "8086:8086"
+
+  smart_guardian:
+     depends_on:
+       - influxdb
+     image: 
+     
+     restart: unless-stopped
+     environment:
+       AWS_REGION: 
+      
+volumes:
+    db_data: {}

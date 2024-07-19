@@ -1,0 +1,5 @@
+picamera2
+influxdb
+requests
+openai
+langchain
