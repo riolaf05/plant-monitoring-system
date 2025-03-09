@@ -1,5 +1,11 @@
-picamera2
-influxdb
 requests
 openai
 langchain
+typing-extensions
+langgraph
+telebot
+python-logging-loki
+python-dotenv
+influxdb-client
+langchain-groq
+langchain-openai

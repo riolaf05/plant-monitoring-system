@@ -1,30 +1,25 @@
-# Use the balenalib base image for Raspberry Pi 4 (ARM architecture)
-FROM balenalib/raspberrypi4-64-python:latest
+# app/Dockerfile
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libjpeg-dev \
-    zlib1g-dev \
-    libopenjp2-7 \
-    libtiff5 \
-    libatlas-base-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+FROM python:3.9-slim
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file
-COPY requirements.txt .
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
+# HEALTHCHECK CMD curl --fail http://localhost:8080 || exit 1
 
-# Set environment variables for InfluxDB
-ENV INFLUXDB_HOST=localhost
-ENV INFLUXDB_PORT=8086
-ENV INFLUXDB
+COPY tools/ tools/
+COPY utils/ utils/
+COPY main.py main.py 
+
+#for normal deploy
+ENTRYPOINT ["python", "agent.py"]
+
